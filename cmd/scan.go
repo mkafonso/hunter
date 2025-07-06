@@ -9,8 +9,8 @@ import (
 
 	"github.com/mkafonso/hunter/checks/performance"
 	"github.com/mkafonso/hunter/checks/security"
+	"github.com/mkafonso/hunter/scanner"
 	"github.com/mkafonso/hunter/types"
-	"github.com/mkafonso/hunter/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +21,7 @@ var scanCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		url := args[0]
 
-		resp, latency, err := utils.FetchWithMetrics(url)
+		resp, latency, err := scanner.FetchWithMetrics(url)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "❌ Error fetching URL: %v\n", err)
 			os.Exit(1)
@@ -35,7 +35,8 @@ var scanCmd = &cobra.Command{
 
 		checks := []types.Check{
 			security.SecurityHeadersCheck{},
-			performance.LatencyCheck{Threshold: 500 * time.Millisecond},
+			performance.LatencyCheck{Threshold: 500 * time.Millisecond}, // 500ms
+			performance.PayloadSizeCheck{MaxBytes: 500 * 1024},          // 500KB
 		}
 
 		for _, check := range checks {
