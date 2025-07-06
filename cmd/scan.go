@@ -1,14 +1,16 @@
 package cmd
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"os"
 	"time"
 
+	"github.com/mkafonso/hunter/checks/performance"
 	"github.com/mkafonso/hunter/checks/security"
 	"github.com/mkafonso/hunter/types"
+	"github.com/mkafonso/hunter/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -18,19 +20,22 @@ var scanCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		url := args[0]
-		client := &http.Client{Timeout: 10 * time.Second}
 
-		resp, err := client.Get(url)
+		resp, latency, err := utils.FetchWithMetrics(url)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "❌ Error fetching URL: %v\n", err)
 			os.Exit(1)
 		}
 		defer resp.Body.Close()
 
+		ctx := context.WithValue(resp.Request.Context(), "latency", latency)
+		resp.Request = resp.Request.WithContext(ctx)
+
 		var allFindings []types.Finding
 
 		checks := []types.Check{
 			security.SecurityHeadersCheck{},
+			performance.LatencyCheck{Threshold: 500 * time.Millisecond},
 		}
 
 		for _, check := range checks {
