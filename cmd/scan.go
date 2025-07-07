@@ -42,7 +42,7 @@ var scanCmd = &cobra.Command{
 			security.CORSCheck{},
 			security.HeadersExposureCheck{},
 			security.PassiveRateLimitCheck{},
-
+			security.ActiveRateLimitCheck{Requests: 10, Delay: 0, Timeout: 3 * time.Second},
 			structure.StatusCodeCheck{},
 			structure.VersioningCheck{},
 			structure.MethodUsageCheck{},
