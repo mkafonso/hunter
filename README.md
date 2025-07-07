@@ -91,6 +91,6 @@ go run main.go scan https://viacep.com.br/ws/01001000/json/ --report=json
 
 ---
 
-## Estrutura do Projeto
-
 ## Roadmap Futuro
+
+Não tenho plano fechado, nem mapa traçado. Irei programando as ideias que me vierem vindo, conforme o tempo, o vento e a vontade 👻
