@@ -2,7 +2,9 @@ package jsonreport
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/mkafonso/hunter/knowledge"
 	"github.com/mkafonso/hunter/types"
@@ -42,7 +44,26 @@ func Generate(findings []types.Finding) {
 		Issues: enriched,
 	}
 
-	out := json.NewEncoder(os.Stdout)
-	out.SetIndent("", "  ")
-	out.Encode(report)
+	// Print in the terminal
+	_ = json.NewEncoder(os.Stdout).Encode(report)
+
+	exportPath := "exports/report.json"
+	if err := os.MkdirAll(filepath.Dir(exportPath), os.ModePerm); err != nil {
+		fmt.Fprintf(os.Stderr, "❌ Erro ao criar diretório exports/: %v\n", err)
+		return
+	}
+
+	// Save file
+	file, err := os.Create(exportPath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "❌ Erro ao criar %s: %v\n", exportPath, err)
+		return
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
+	if err := encoder.Encode(report); err != nil {
+		fmt.Fprintf(os.Stderr, "❌ Erro ao escrever JSON: %v\n", err)
+	}
 }
