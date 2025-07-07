@@ -14,7 +14,7 @@ O **Hunter** é um scanner automatizado para APIs que atua como um "Lighthouse p
 go run main.go scan https://petstore.swagger.io/v2/swagger.json --report=json
 ```
 
-https://github.com/user-attachments/assets/c0c0ac33-cf03-4a48-b0f7-e7830af93676
+https://github.com/user-attachments/assets/a11e0951-9557-4d9e-b9ce-a5847fed3006
 
 ## Endpoint único
 
