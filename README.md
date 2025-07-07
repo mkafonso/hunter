@@ -8,6 +8,60 @@ O **Hunter** é um scanner automatizado para APIs que atua como um "Lighthouse p
 
 ---
 
+```bash
+go run main.go scan https://viacep.com.br/ws/01001000/json/ --report=json
+```
+
+```json
+{
+    "score": 60,
+    "issues": [
+        {
+            "type": "security",
+            "message": "SECURITY_HEADER_MISSING",
+            "path": "/ws/01001000/json/",
+            "description": "A required security header is missing. These headers help protect against common vulnerabilities such as clickjacking, MIME-type sniffing, and XSS.",
+            "recommendation": "Ensure headers like 'Strict-Transport-Security', 'X-Content-Type-Options', 'X-Frame-Options', 'X-XSS-Protection', and 'Referrer-Policy' are included in responses.",
+            "references": [
+                "https://owasp.org/www-project-secure-headers/",
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers"
+            ]
+        },
+        {
+            "type": "security",
+            "message": "SECURITY_CORS_CREDENTIALS_WITH_WILDCARD_ORIGIN",
+            "path": "/ws/01001000/json/",
+            "description": "'Access-Control-Allow-Credentials' is true while origin is '*', which is invalid per the CORS spec and creates security risks.",
+            "recommendation": "Use specific origins instead of '*', or disable credentials if open access is required.",
+            "references": [
+                "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials"
+            ]
+        },
+        {
+            "type": "security",
+            "message": "SECURITY_ACTIVE_RATE_LIMIT_NOT_DETECTED",
+            "path": "/ws/01001000/json/",
+            "description": "No rate limiting was observed — the API responded normally to multiple rapid requests.",
+            "recommendation": "Implement rate limiting to prevent abuse and reduce attack surface.",
+            "references": [
+                "https://developer.mozilla.org/en-US/docs/Glossary/Rate_limit"
+            ]
+        },
+        {
+            "type": "structure",
+            "message": "STRUCTURE_VERSIONING_MISSING_IN_PATH",
+            "path": "/ws/01001000/json/",
+            "description": "API routes without versioning in the path make it difficult to evolve the API without breaking existing clients.",
+            "recommendation": "Include the API version in the URL path (e.g., /v1/resource) to support backward compatibility.",
+            "references": ["https://restfulapi.net/versioning/"]
+        }
+    ]
+    ...
+}
+```
+
+---
+
 ## Funcionalidades
 
 ### ✅ Segurança
