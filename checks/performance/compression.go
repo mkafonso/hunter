@@ -29,7 +29,7 @@ func (c CompressionCheck) Run(resp *http.Response) []types.Finding {
 		if size, err := strconv.Atoi(cl); err == nil && size > 1000 {
 			findings = append(findings, types.Finding{
 				Type:    "performance",
-				Message: "Response larger than 1KB without compression — consider enabling gzip or br",
+				Message: "PERFORMANCE_COMPRESSION_LARGE_UNCOMPRESSED_RESPONSE",
 				Path:    resp.Request.URL.Path,
 			})
 			return findings
@@ -39,7 +39,7 @@ func (c CompressionCheck) Run(resp *http.Response) []types.Finding {
 	if encoding == "" {
 		findings = append(findings, types.Finding{
 			Type:    "performance",
-			Message: "Missing Content-Encoding header — response is likely uncompressed",
+			Message: "PERFORMANCE_COMPRESSION_MISSING_CONTENT_ENCODING_HEADER",
 			Path:    resp.Request.URL.Path,
 		})
 	}

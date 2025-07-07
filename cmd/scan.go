@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"time"
@@ -11,10 +10,13 @@ import (
 	"github.com/mkafonso/hunter/checks/security"
 	"github.com/mkafonso/hunter/checks/structure"
 	"github.com/mkafonso/hunter/checks/vulnerabilities"
+	"github.com/mkafonso/hunter/reporters"
 	"github.com/mkafonso/hunter/scanner"
 	"github.com/mkafonso/hunter/types"
 	"github.com/spf13/cobra"
 )
+
+var reportFormat string
 
 var scanCmd = &cobra.Command{
 	Use:   "scan [url]",
@@ -59,17 +61,11 @@ var scanCmd = &cobra.Command{
 			allFindings = append(allFindings, findings...)
 		}
 
-		report := map[string]any{
-			"score":  100 - len(allFindings)*5,
-			"issues": allFindings,
-		}
-
-		enc := json.NewEncoder(os.Stdout)
-		enc.SetIndent("", "  ")
-		enc.Encode(report)
+		reporters.Report(reportFormat, allFindings)
 	},
 }
 
 func init() {
+	scanCmd.Flags().StringVarP(&reportFormat, "report", "r", "json", "Formato do relatório: json, markdown, html, slack")
 	rootCmd.AddCommand(scanCmd)
 }

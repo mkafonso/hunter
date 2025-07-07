@@ -26,7 +26,7 @@ func (l LatencyCheck) Run(resp *http.Response) []types.Finding {
 	if duration > l.Threshold {
 		findings = append(findings, types.Finding{
 			Type:    "performance",
-			Message: "Response time exceeded threshold: " + duration.String(),
+			Message: "PERFORMANCE_LATENCY_EXCEEDED_THRESHOLD",
 			Path:    resp.Request.URL.Path,
 		})
 	}

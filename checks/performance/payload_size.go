@@ -1,7 +1,6 @@
 package performance
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -32,23 +31,10 @@ func (p PayloadSizeCheck) Run(resp *http.Response) []types.Finding {
 	if int64(len(bodyBytes)) > p.MaxBytes {
 		findings = append(findings, types.Finding{
 			Type:    "performance",
-			Message: "Payload size exceeds limit: " + byteCountDecimal(int64(len(bodyBytes))),
+			Message: "PERFORMANCE_PAYLOAD_SIZE_EXCEEDS_LIMIT",
 			Path:    resp.Request.URL.Path,
 		})
 	}
 
 	return findings
-}
-
-func byteCountDecimal(b int64) string {
-	const unit = 1000
-	if b < unit {
-		return fmt.Sprintf("%d B", b)
-	}
-	div, exp := unit, 0
-	for n := b / unit; n >= unit; n /= unit {
-		div *= unit
-		exp++
-	}
-	return fmt.Sprintf("%.1f %cB", float64(b)/float64(div), "kMGTPE"[exp])
 }

@@ -3,9 +3,12 @@ package types
 import "net/http"
 
 type Finding struct {
-	Type    string `json:"type"`    // Ex: "security", "performance"
-	Message string `json:"message"` // Ex: "Missing X-Content-Type-Options header"
-	Path    string `json:"path"`    // Ex: "/login"
+	Type           string   `json:"type"`
+	Message        string   `json:"message"`
+	Path           string   `json:"path"`
+	Description    string   `json:"description,omitempty"`
+	Recommendation string   `json:"recommendation,omitempty"`
+	References     []string `json:"references,omitempty"`
 }
 
 type Check interface {
