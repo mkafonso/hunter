@@ -9,6 +9,7 @@ import (
 
 	"github.com/mkafonso/hunter/checks/performance"
 	"github.com/mkafonso/hunter/checks/security"
+	"github.com/mkafonso/hunter/checks/structure"
 	"github.com/mkafonso/hunter/scanner"
 	"github.com/mkafonso/hunter/types"
 	"github.com/spf13/cobra"
@@ -35,6 +36,7 @@ var scanCmd = &cobra.Command{
 
 		checks := []types.Check{
 			security.SecurityHeadersCheck{},
+			structure.StatusCodeCheck{},
 			performance.LatencyCheck{Threshold: 500 * time.Millisecond}, // 500ms
 			performance.PayloadSizeCheck{MaxBytes: 500 * 1024},          // 500KB
 		}
