@@ -38,6 +38,7 @@ var scanCmd = &cobra.Command{
 			security.SecurityHeadersCheck{},
 			structure.StatusCodeCheck{},
 			structure.VersioningCheck{},
+			structure.MethodUsageCheck{},
 			performance.LatencyCheck{Threshold: 500 * time.Millisecond}, // 500ms
 			performance.PayloadSizeCheck{MaxBytes: 500 * 1024},          // 500KB
 		}
