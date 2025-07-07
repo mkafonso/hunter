@@ -24,7 +24,7 @@ func (m MethodUsageCheck) Run(resp *http.Response) []types.Finding {
 	if method == http.MethodGet && containsActionVerb(path) {
 		findings = append(findings, types.Finding{
 			Type:    "structure",
-			Message: "GET used with unsafe action verb — may be modifying state",
+			Message: "STRUCTURE_METHOD_USAGE_GET_UNSAFE_VERB",
 			Path:    path,
 		})
 	}
@@ -33,7 +33,7 @@ func (m MethodUsageCheck) Run(resp *http.Response) []types.Finding {
 	if method == http.MethodPost && containsSearchIntent(path) {
 		findings = append(findings, types.Finding{
 			Type:    "structure",
-			Message: "POST used for search — consider using GET with query params",
+			Message: "STRUCTURE_METHOD_USAGE_POST_FOR_SEARCH",
 			Path:    path,
 		})
 	}
@@ -42,7 +42,7 @@ func (m MethodUsageCheck) Run(resp *http.Response) []types.Finding {
 	if method == http.MethodPut && !hasResourceID(path) {
 		findings = append(findings, types.Finding{
 			Type:    "structure",
-			Message: "PUT used without resource ID — may indicate misuse (should be PATCH or POST)",
+			Message: "STRUCTURE_METHOD_USAGE_PUT_WITHOUT_ID",
 			Path:    path,
 		})
 	}
@@ -51,7 +51,7 @@ func (m MethodUsageCheck) Run(resp *http.Response) []types.Finding {
 	if method == http.MethodDelete && resp.ContentLength > 100 {
 		findings = append(findings, types.Finding{
 			Type:    "structure",
-			Message: "DELETE returned large body — unnecessary or incorrect response",
+			Message: "STRUCTURE_METHOD_USAGE_DELETE_LARGE_BODY",
 			Path:    path,
 		})
 	}
@@ -60,7 +60,7 @@ func (m MethodUsageCheck) Run(resp *http.Response) []types.Finding {
 	if method == http.MethodPatch && !hasResourceID(path) {
 		findings = append(findings, types.Finding{
 			Type:    "structure",
-			Message: "PATCH used without resource ID — possibly invalid usage",
+			Message: "STRUCTURE_METHOD_USAGE_PATCH_WITHOUT_ID",
 			Path:    path,
 		})
 	}
@@ -69,7 +69,7 @@ func (m MethodUsageCheck) Run(resp *http.Response) []types.Finding {
 	if method == http.MethodGet && isUnsafeSuffix(path) {
 		findings = append(findings, types.Finding{
 			Type:    "structure",
-			Message: "GET used on resource with unsafe action suffix — likely not safe or idempotent",
+			Message: "STRUCTURE_METHOD_USAGE_GET_UNSAFE_SUFFIX",
 			Path:    path,
 		})
 	}

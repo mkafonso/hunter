@@ -25,7 +25,7 @@ func (v VersioningCheck) Run(resp *http.Response) []types.Finding {
 	if !versioningPattern.MatchString(urlPath) {
 		findings = append(findings, types.Finding{
 			Type:    "structure",
-			Message: "Missing versioning in API path",
+			Message: "STRUCTURE_VERSIONING_MISSING_IN_PATH",
 			Path:    urlPath,
 		})
 	}
@@ -34,7 +34,7 @@ func (v VersioningCheck) Run(resp *http.Response) []types.Finding {
 	if strings.Contains(strings.ToLower(query), "version=") {
 		findings = append(findings, types.Finding{
 			Type:    "structure",
-			Message: "Versioning via query param is discouraged (use path-based versioning)",
+			Message: "STRUCTURE_VERSIONING_QUERY_PARAM_DISCOURAGED",
 			Path:    urlPath,
 		})
 	}

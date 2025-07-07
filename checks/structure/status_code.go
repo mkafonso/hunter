@@ -30,7 +30,7 @@ func (s StatusCodeCheck) Run(resp *http.Response) []types.Finding {
 		if looksLikeError(body) {
 			findings = append(findings, types.Finding{
 				Type:    "structure",
-				Message: "2xx status code with error-like response body",
+				Message: "STRUCTURE_STATUS_CODE_2XX_ERROR_BODY",
 				Path:    resp.Request.URL.Path,
 			})
 		}
@@ -39,7 +39,7 @@ func (s StatusCodeCheck) Run(resp *http.Response) []types.Finding {
 		if resp.Request.Method == "POST" && resp.StatusCode == 204 && len(body) > 0 {
 			findings = append(findings, types.Finding{
 				Type:    "structure",
-				Message: "POST returned 204 No Content but response body is not empty",
+				Message: "STRUCTURE_STATUS_CODE_POST_204_WITH_BODY",
 				Path:    resp.Request.URL.Path,
 			})
 		}
@@ -48,7 +48,7 @@ func (s StatusCodeCheck) Run(resp *http.Response) []types.Finding {
 		if resp.Request.Method == "GET" && resp.StatusCode == 201 {
 			findings = append(findings, types.Finding{
 				Type:    "structure",
-				Message: "GET method returned 201 Created — unexpected",
+				Message: "STRUCTURE_STATUS_CODE_GET_UNEXPECTED_201",
 				Path:    resp.Request.URL.Path,
 			})
 		}
@@ -57,7 +57,7 @@ func (s StatusCodeCheck) Run(resp *http.Response) []types.Finding {
 		if resp.Request.Method == "GET" && resp.StatusCode == 200 && len(body) == 0 {
 			findings = append(findings, types.Finding{
 				Type:    "structure",
-				Message: "GET returned 200 OK with empty body",
+				Message: "STRUCTURE_STATUS_CODE_GET_200_EMPTY_BODY",
 				Path:    resp.Request.URL.Path,
 			})
 		}
@@ -70,7 +70,7 @@ func (s StatusCodeCheck) Run(resp *http.Response) []types.Finding {
 			if len(body) > 0 {
 				findings = append(findings, types.Finding{
 					Type:    "structure",
-					Message: "204 No Content response should not have a body",
+					Message: "STRUCTURE_STATUS_CODE_204_WITH_BODY",
 					Path:    resp.Request.URL.Path,
 				})
 			}
@@ -80,7 +80,7 @@ func (s StatusCodeCheck) Run(resp *http.Response) []types.Finding {
 		if resp.Request.Method == "GET" && resp.StatusCode == 204 {
 			findings = append(findings, types.Finding{
 				Type:    "structure",
-				Message: "GET returned 204 No Content, expected 200 with content",
+				Message: "STRUCTURE_STATUS_CODE_GET_UNEXPECTED_204",
 				Path:    resp.Request.URL.Path,
 			})
 		}
@@ -89,7 +89,7 @@ func (s StatusCodeCheck) Run(resp *http.Response) []types.Finding {
 		if resp.Request.Method == "HEAD" && !(resp.StatusCode == 200 || resp.StatusCode == 204) {
 			findings = append(findings, types.Finding{
 				Type:    "structure",
-				Message: "HEAD request returned unexpected status code",
+				Message: "STRUCTURE_STATUS_CODE_HEAD_UNEXPECTED",
 				Path:    resp.Request.URL.Path,
 			})
 		}

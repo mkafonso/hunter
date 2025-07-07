@@ -2,7 +2,6 @@ package structure
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"regexp"
@@ -39,13 +38,9 @@ func (f InconsistentFieldCasingCheck) Run(resp *http.Response) []types.Finding {
 	countFieldCasings(data, casingCounts)
 
 	if len(casingCounts) > 1 {
-		var parts []string
-		for style, count := range casingCounts {
-			parts = append(parts, fmt.Sprintf("%s (%d)", style, count))
-		}
 		findings = append(findings, types.Finding{
 			Type:    "structure",
-			Message: "Inconsistent field casing detected: " + strings.Join(parts, ", "),
+			Message: "STRUCTURE_FIELD_CASING_INCONSISTENT",
 			Path:    resp.Request.URL.Path,
 		})
 	}
