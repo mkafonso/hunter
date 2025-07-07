@@ -4,14 +4,18 @@ import (
 	"fmt"
 	"os"
 
-	jsonreport "github.com/mkafonso/hunter/reporters/json"
+	json "github.com/mkafonso/hunter/reporters/json"
+	markdown "github.com/mkafonso/hunter/reporters/markdown"
 	"github.com/mkafonso/hunter/types"
 )
 
 func Report(format string, findings []types.Finding) {
 	switch format {
 	case "json":
-		jsonreport.Generate(findings)
+		json.Generate(findings)
+
+	case "markdown":
+		markdown.Generate(findings)
 
 	default:
 		fmt.Fprintf(os.Stderr, "Formato de relatório não suportado: %s\n", format)

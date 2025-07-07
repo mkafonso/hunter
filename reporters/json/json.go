@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
+	"github.com/mkafonso/hunter/knowledge"
 	"github.com/mkafonso/hunter/types"
 )
 
@@ -25,7 +26,7 @@ func Generate(findings []types.Finding) {
 	var enriched []DetailedFinding
 
 	for _, f := range findings {
-		extras := enrich(f.Message)
+		extras := knowledge.Enrich(f.Message)
 		enriched = append(enriched, DetailedFinding{
 			Type:           f.Type,
 			Message:        f.Message,
