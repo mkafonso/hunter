@@ -43,9 +43,11 @@ var scanCmd = &cobra.Command{
 			security.HeadersExposureCheck{},
 			security.PassiveRateLimitCheck{},
 			security.ActiveRateLimitCheck{Requests: 10, Delay: 0, Timeout: 3 * time.Second},
+
 			structure.StatusCodeCheck{},
 			structure.VersioningCheck{},
 			structure.MethodUsageCheck{},
+			structure.InconsistentFieldCasingCheck{},
 
 			performance.LatencyCheck{Threshold: 500 * time.Millisecond}, // 500ms
 			performance.PayloadSizeCheck{MaxBytes: 500 * 1024},          // 500KB
