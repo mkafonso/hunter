@@ -10,6 +10,7 @@ import (
 	"github.com/mkafonso/hunter/checks/performance"
 	"github.com/mkafonso/hunter/checks/security"
 	"github.com/mkafonso/hunter/checks/structure"
+	"github.com/mkafonso/hunter/checks/vulnerabilities"
 	"github.com/mkafonso/hunter/scanner"
 	"github.com/mkafonso/hunter/types"
 	"github.com/spf13/cobra"
@@ -36,6 +37,7 @@ var scanCmd = &cobra.Command{
 
 		checks := []types.Check{
 			security.SecurityHeadersCheck{},
+			vulnerabilities.StacktraceCheck{},
 			structure.StatusCodeCheck{},
 			structure.VersioningCheck{},
 			structure.MethodUsageCheck{},
