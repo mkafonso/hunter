@@ -229,6 +229,23 @@ func enrich(findingMessage string) EnrichedInfo {
 			References:     []string{"https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/HEAD"},
 		}
 
+	/**
+	 * VULNERABILITIES
+	 */
+	case strings.Contains(findingMessage, "VULNERABILITY_STACKTRACE_DETECTED"):
+		return EnrichedInfo{
+			Description:    "A stacktrace was found in the response body, indicating a server-side error leaking internal details.",
+			Recommendation: "Disable stacktrace exposure in and return generic error messages instead.",
+			References:     []string{""},
+		}
+
+	case strings.Contains(findingMessage, "VULNERABILITY_STACKTRACE_LANGUAGE_SPECIFIC"):
+		return EnrichedInfo{
+			Description:    "The response body contains stacktrace patterns specific to languages like Java, Python, Node.js, Ruby, or PHP.",
+			Recommendation: "Sanitize all error messages and configure the application to hide implementation details in production.",
+			References:     []string{""},
+		}
+
 	default:
 		return EnrichedInfo{}
 	}

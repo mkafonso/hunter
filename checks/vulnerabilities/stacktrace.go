@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/mkafonso/hunter/types"
@@ -32,7 +31,7 @@ func (s StacktraceCheck) Run(resp *http.Response) []types.Finding {
 	if looksLikeLanguageStacktrace(bodyStr) {
 		findings = append(findings, types.Finding{
 			Type:    "vulnerability",
-			Message: format(counter, "Detected language-specific stacktrace"),
+			Message: "VULNERABILITY_STACKTRACE_DETECTED",
 			Path:    resp.Request.URL.Path,
 		})
 		counter++
@@ -51,7 +50,7 @@ func (s StacktraceCheck) Run(resp *http.Response) []types.Finding {
 		if pattern.Match(bodyBytes) {
 			findings = append(findings, types.Finding{
 				Type:    "vulnerability",
-				Message: format(counter, "Detected stacktrace-like pattern in HTTP response body"),
+				Message: "VULNERABILITY_STACKTRACE_LANGUAGE_SPECIFIC",
 				Path:    resp.Request.URL.Path,
 			})
 			counter++
@@ -77,8 +76,4 @@ func looksLikeLanguageStacktrace(body string) bool {
 		}
 	}
 	return false
-}
-
-func format(n int, msg string) string {
-	return "[" + strings.TrimSpace(strings.TrimPrefix(strings.TrimPrefix(strings.ReplaceAll(msg, "\n", ""), "- "), "•")) + "] #" + strconv.Itoa(n) + " " + msg
 }
