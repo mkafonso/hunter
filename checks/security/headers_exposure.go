@@ -35,7 +35,7 @@ func (s HeadersExposureCheck) Run(resp *http.Response) []types.Finding {
 		if value != "" && !isGenericOrMasked(value) {
 			findings = append(findings, types.Finding{
 				Type:    "security",
-				Message: format(counter, "Sensitive header exposed: '"+header+": "+value+"'"),
+				Message: "SECURITY_HEADER_EXPOSURE_DETECTED",
 				Path:    resp.Request.URL.Path,
 			})
 			counter++
@@ -54,8 +54,4 @@ func isGenericOrMasked(value string) bool {
 		}
 	}
 	return false
-}
-
-func format(n int, msg string) string {
-	return "[#" + strings.TrimSpace(strings.TrimLeft(strings.ReplaceAll(msg, "\n", ""), "- ")) + "] " + msg
 }

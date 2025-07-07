@@ -25,7 +25,7 @@ func (c CORSCheck) Run(resp *http.Response) []types.Finding {
 	if origin == "*" {
 		findings = append(findings, types.Finding{
 			Type:    "security",
-			Message: "CORS misconfiguration: Access-Control-Allow-Origin is set to '*' (allows any domain)",
+			Message: "SECURITY_CORS_MISCONFIGURATION",
 			Path:    resp.Request.URL.Path,
 		})
 	}
@@ -34,7 +34,7 @@ func (c CORSCheck) Run(resp *http.Response) []types.Finding {
 	if origin == "*" && strings.EqualFold(credentials, "true") {
 		findings = append(findings, types.Finding{
 			Type:    "security",
-			Message: "CORS violation: 'Access-Control-Allow-Credentials: true' cannot be used with wildcard origin '*'",
+			Message: "SECURITY_CORS_CREDENTIALS_WITH_WILDCARD_ORIGIN",
 			Path:    resp.Request.URL.Path,
 		})
 	}
@@ -43,7 +43,7 @@ func (c CORSCheck) Run(resp *http.Response) []types.Finding {
 	if strings.Contains(methods, "*") || strings.Contains(methods, "DELETE") {
 		findings = append(findings, types.Finding{
 			Type:    "security",
-			Message: "CORS configuration allows dangerous methods (e.g., '*', DELETE)",
+			Message: "SECURITY_CORS_DANGEROUS_METHODS_ALLOWED",
 			Path:    resp.Request.URL.Path,
 		})
 	}
@@ -52,7 +52,7 @@ func (c CORSCheck) Run(resp *http.Response) []types.Finding {
 	if strings.Contains(headers, "*") {
 		findings = append(findings, types.Finding{
 			Type:    "security",
-			Message: "CORS configuration allows all headers via wildcard",
+			Message: "SECURITY_CORS_ALLOW_ALL_HEADERS",
 			Path:    resp.Request.URL.Path,
 		})
 	}

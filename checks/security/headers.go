@@ -27,9 +27,10 @@ func (s SecurityHeadersCheck) Run(resp *http.Response) []types.Finding {
 		if resp.Header.Get(header) == "" {
 			findings = append(findings, types.Finding{
 				Type:    "security",
-				Message: "Missing header: " + header,
+				Message: "SECURITY_HEADER_MISSING",
 				Path:    resp.Request.URL.Path,
 			})
+			break // one match is enough
 		}
 	}
 

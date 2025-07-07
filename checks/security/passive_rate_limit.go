@@ -25,7 +25,7 @@ func (r PassiveRateLimitCheck) Run(resp *http.Response) []types.Finding {
 	if limit == "" && remaining == "" && retry == "" {
 		findings = append(findings, types.Finding{
 			Type:    "security",
-			Message: "No rate-limiting headers found (e.g., X-RateLimit-Limit, Retry-After)",
+			Message: "SECURITY_PASSIVE_RATE_LIMIT_HEADERS_NOT_FOUND",
 			Path:    resp.Request.URL.Path,
 		})
 	}
@@ -34,7 +34,7 @@ func (r PassiveRateLimitCheck) Run(resp *http.Response) []types.Finding {
 	if limit == "0" {
 		findings = append(findings, types.Finding{
 			Type:    "security",
-			Message: "X-RateLimit-Limit is set to 0 — rate limiting may be disabled",
+			Message: "SECURITY_PASSIVE_RATE_LIMIT_DISABLED",
 			Path:    resp.Request.URL.Path,
 		})
 	}
@@ -44,19 +44,10 @@ func (r PassiveRateLimitCheck) Run(resp *http.Response) []types.Finding {
 		if r, err2 := strconv.Atoi(remaining); err2 == nil && r > l {
 			findings = append(findings, types.Finding{
 				Type:    "security",
-				Message: "X-RateLimit-Remaining is greater than X-RateLimit-Limit — possible misconfiguration",
+				Message: "SECURITY_PASSIVE_RATE_LIMIT_MISCONFIGURATION",
 				Path:    resp.Request.URL.Path,
 			})
 		}
-	}
-
-	// 4. 429 received = rate limit working (positive)
-	if resp.StatusCode == 429 {
-		findings = append(findings, types.Finding{
-			Type:    "info",
-			Message: "Received 429 Too Many Requests — rate limiting appears to be enforced",
-			Path:    resp.Request.URL.Path,
-		})
 	}
 
 	return findings

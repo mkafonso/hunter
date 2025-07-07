@@ -64,15 +64,10 @@ func (a ActiveRateLimitCheck) Run(resp *http.Response) []types.Finding {
 	wg.Wait()
 
 	if rateLimited {
-		findings = append(findings, types.Finding{
-			Type:    "security",
-			Message: "Rate limiting detected — at least one 429 response returned after burst of requests",
-			Path:    resp.Request.URL.Path,
-		})
 	} else {
 		findings = append(findings, types.Finding{
 			Type:    "security",
-			Message: "No rate limiting observed — all requests succeeded without 429",
+			Message: "SECURITY_ACTIVE_RATE_LIMIT_NOT_DETECTED",
 			Path:    resp.Request.URL.Path,
 		})
 	}
