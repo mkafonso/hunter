@@ -37,6 +37,7 @@ var scanCmd = &cobra.Command{
 
 		checks := []types.Check{
 			security.SecurityHeadersCheck{},
+			security.CORSCheck{},
 			vulnerabilities.StacktraceCheck{},
 			structure.StatusCodeCheck{},
 			structure.VersioningCheck{},
